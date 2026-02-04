@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const Header = () => {
   return (
@@ -12,9 +13,9 @@ const Header = () => {
                 <div className="flex h-9 w-9 items-center justify-center rounded-full bg-linear-to-br from-purple-500 to-purple-600 text-sm font-bold text-white shadow-lg shadow-purple-500/50">
                     MH
                 </div>
-                <a className="text-3xl font-semibold text-slate-100" href="/">
+                <Link className="text-3xl font-semibold text-slate-100" to={"/"}>
                  Mental Health Prediction
-                </a>
+                </Link>
                 
             </div>
 
@@ -22,17 +23,14 @@ const Header = () => {
             <div className="flex items-center gap-6">
             
                 <a href="#"
-                className="text-sm rounded-full font-medium text-slate-200 px-5 py-2 border border-white/20 backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-white/30 transition"
-            >
-                Log in
-            </a>
-
+                className="text-sm rounded-full font-medium text-slate-200 px-5 py-2 border border-white/20 backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-white/30 transition">
+                    Log in
+                </a>
             
-                <a href="#"
-                className="rounded-full bg-linear-to-r from-purple-500 to-purple-600 px-5 py-2 text-sm font-semibold text-white hover:from-purple-600 hover:to-purple-700 transition shadow-lg shadow-purple-500/50 backdrop-blur-sm"
-            >
-                Register
-            </a>
+                <Link to="/register"
+                className="rounded-full bg-linear-to-r from-purple-500 to-purple-600 px-5 py-2 text-sm font-semibold text-white hover:from-purple-600 hover:to-purple-700 transition shadow-lg shadow-purple-500/50 backdrop-blur-sm">
+                    Register
+                </Link>
             </div>
         </div>
     </header>

@@ -5,7 +5,7 @@ const Feature = () => {
   return (
     <>
     {/* Mental Health Features */}
-      <section className="px-10 py-20">
+      <section id="feature" className="px-10 py-20">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center text-white mb-4">
             Understanding Mental Health

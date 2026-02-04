@@ -4,7 +4,7 @@ const About = () => {
   return (
     <>
     {/* About Section */}
-      <section className="px-10 py-20">
+      <section id="about" className="px-10 py-20">
         <div className="max-w-6xl mx-auto">
           <div className="backdrop-blur-xl bg-white/5 border border-white/10 rounded-3xl p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
