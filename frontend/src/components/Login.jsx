@@ -1,12 +1,43 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import Header from "./Landing Page Component/Header"
 
 import {Eye, EyeOff} from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+
+import axios from 'axios'
+import { AuthContext } from '../AuthProvider'
 
 const Login = () => {
 
   const [showPassword, setShowPassword] = useState(false)
 
+  const [username, setUsername ] = useState('')
+  const [password, setPassword] = useState('')
+
+  const [errors, setError] = useState('')
+
+  const navigate = useNavigate()
+  const { setIsLoggedIn } = useContext(AuthContext)
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const formData = {username, password}
+
+    try {
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_API}token/`, formData)
+      console.log("access token: ", response.data.access)
+      localStorage.setItem("accessToken", response.data.access)
+      localStorage.setItem("refreshToken", response.data.refresh)
+      setIsLoggedIn(true)
+
+      navigate('/predict')
+    }
+    catch (err) {
+      setError(err?.response?.data?.detail || 'Invalid credentials. Please try again.')
+    }
+ }
+  
   return (
     <>
         <Header/>
@@ -34,13 +65,13 @@ const Login = () => {
                           type="text"
                           name="username"
                           placeholder="johndoe"
-                          // value={formData.username}
-                          // onChange={handleChange}
+                          value={username}
+                          onChange={(e) => {setUsername(e.target.value)}}
                           className="w-full rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 px-4 py-3 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition"
                         />
                       </div>
 
-                      {/* {errors.username && (<p className='text-red-400 mt-1'>{errors.username}</p>)} */}
+                      {errors.username && (<p className='text-red-400 mt-1'>{errors.username}</p>)}
 
                       {/* Password */}
                       <div>
@@ -50,8 +81,8 @@ const Login = () => {
                             type={showPassword ? 'text' : 'password'}
                             name="password"
                             placeholder="••••••••"
-                            // value={password}
-                            // onChange={handlePassword}
+                            value={password}
+                            onChange={(e) => {setPassword(e.target.value)}}
                             className="w-full rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-400 px-4 py-3 pr-12 focus:outline-none focus:border-purple-500 focus:bg-white/10 transition"
                           />
                           <button
@@ -63,13 +94,15 @@ const Login = () => {
                           </button>
                         </div>
                       </div>
-                      {/* {errors.password && (<p className=' text-red-400 text-sm mt-1'>{errors.password}</p>)} */}
+                      {errors.password && (<p className=' text-red-400 text-sm mt-1'>{errors.password}</p>)}
 
                       
 
+                      {errors && (<p className='text-red-400 text-sm mt-1'>{errors}</p>)}
+
                       {/* Login Button */}
                       <button
-                        // onClick={handleSubmit}
+                        onClick={handleSubmit}
                         className="max-w-2xs   rounded-xl bg-linear-to-r from-purple-500 to-purple-600 px-6 py-3 text-base font-semibold text-white hover:from-purple-600 hover:to-purple-700 transition shadow-lg shadow-purple-500/40 mt-2">
                         Login
                       </button>

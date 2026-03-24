@@ -3,6 +3,7 @@ import { Brain, Shield, Heart, CheckCircle, Eye, EyeOff } from 'lucide-react'
 import Header from './Landing Page Component/Header'
 
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false)
@@ -22,6 +23,8 @@ const Register = () => {
     email: '',
     password: '',
   })
+
+  const navigate = useNavigate()
 
   const handlePassword = (e) => {
     setPassword(e.target.value)
@@ -43,8 +46,10 @@ const Register = () => {
     console.log("User data: ", userData)
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/v1/register/", userData)
+      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_API}register/`, userData)
       console.log('Form submitted:', response.data)
+
+      navigate('/login')
     } catch (error) {
       setError(error.response.data)
       console.log("Error: ", errors)

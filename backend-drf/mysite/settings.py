@@ -17,6 +17,15 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+def parse_debug_value(raw_value):
+    normalized = str(raw_value).strip().lower()
+    if normalized in {"1", "true", "yes", "on", "development", "dev"}:
+        return True
+    if normalized in {"0", "false", "no", "off", "release", "production", "prod"}:
+        return False
+    return False
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
@@ -24,9 +33,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', default=False, cast=bool)
+DEBUG = parse_debug_value(config('DEBUG', default='False'))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
 
 
 # Application definition
@@ -64,6 +73,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 REST_FRAMEWORK = {

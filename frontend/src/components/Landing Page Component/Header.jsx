@@ -21,7 +21,7 @@ const Header = () => {
 
             {/* Right: Actions */}
             <div className="flex items-center gap-6">
-            
+
                 <Link to={"/login"}
                 className="text-sm rounded-full font-medium text-slate-200 px-5 py-2 border border-white/20 backdrop-blur-sm bg-white/5 hover:bg-white/10 hover:border-white/30 transition">
                     Log in
