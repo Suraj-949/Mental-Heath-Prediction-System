@@ -13,5 +13,7 @@ urlpatterns = [
 
     path('protected-view/', UserViews.ProtectedView.as_view(), name='protectedView'),
 
-    path('predict/', views.MentalHealthPredictView.as_view(), name="mental_health_predict")
+    path('predict/', views.MentalHealthPredictView.as_view(), name="mental_health_predict"),
+    path('save-entry/', views.SaveMoodEntryView.as_view(), name='save_mood_entry'),
+    path('mood-history/', views.MoodHistoryView.as_view(), name='mood_history'),
 ]

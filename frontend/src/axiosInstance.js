@@ -46,6 +46,7 @@ axiosInstance.interceptors.response.use(
       } catch (refreshError) {
         localStorage.removeItem('accessToken')
         localStorage.removeItem('refreshToken')
+        window.dispatchEvent(new Event('storage'))
         return Promise.reject(refreshError)
       }
     }

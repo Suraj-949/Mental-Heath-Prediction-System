@@ -1,12 +1,12 @@
-import React, { useContext } from 'react'
-import {AuthContext} from './AuthProvider'
-import {Navigate} from 'react-router-dom'
+import { useContext } from 'react'
+import { Navigate } from 'react-router-dom'
 
-const PublicRoute = ({children}) => {
+import { AuthContext } from './AuthProvider'
 
-    const {isLoggedIn} = useContext(AuthContext)
+const PublicRoute = ({ children }) => {
+  const { isLoggedIn } = useContext(AuthContext)
 
-    return !isLoggedIn ? ( children ) : ( <Navigate to={'/predict'}/> )
+  return !isLoggedIn ? children : <Navigate to="/predict" replace />
 }
 
 export default PublicRoute

@@ -51,7 +51,7 @@ const About = () => {
               </div>
 
               <div className="relative">
-                <div className="absolute inset-0 bg-linear-to-br from-purple-500/20 to-pink-500/20 rounded-2xl blur-xl"></div>
+                <div className="absolute inset-0 bg-linear-to-br from-emerald-500/20 to-sky-500/20 rounded-2xl blur-xl"></div>
                 <div className="relative backdrop-blur-xl bg-white/10 border border-white/20 rounded-2xl p-8">
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
