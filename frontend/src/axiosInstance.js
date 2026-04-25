@@ -1,7 +1,9 @@
 import axios from 'axios'
 
 const rawBaseURL = import.meta.env.VITE_BACKEND_BASE_API || 'http://127.0.0.1:8000/'
-export const baseURL = rawBaseURL.endsWith('/') ? rawBaseURL : `${rawBaseURL}/`
+const normalizedBaseURL = rawBaseURL.replace(/\/+$/, '')
+export const baseURL = `${normalizedBaseURL}/`
+export const apiUrl = (path) => `${normalizedBaseURL}/${String(path).replace(/^\/+/, '')}`
 
 const axiosInstance = axios.create({
   baseURL,

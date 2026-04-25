@@ -3,7 +3,7 @@ import { Brain, Eye, EyeOff, Heart, LoaderCircle, Shield } from 'lucide-react'
 import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
-import { baseURL } from '../axiosInstance'
+import { apiUrl } from '../axiosInstance'
 import DisclaimerBanner from './DisclaimerBanner'
 import Header from './Landing Page Component/Header'
 
@@ -39,7 +39,7 @@ const Register = () => {
     setErrors({})
 
     try {
-      await axios.post(`${baseURL}register/`, { ...formData, password })
+      await axios.post(apiUrl('register/'), { ...formData, password })
       navigate('/login')
     } catch (error) {
       setErrors(error?.response?.data || { detail: 'Registration failed. Please try again.' })
