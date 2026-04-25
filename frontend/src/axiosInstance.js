@@ -1,6 +1,7 @@
 import axios from 'axios'
 
-const baseURL = import.meta.env.VITE_BACKEND_BASE_API
+const rawBaseURL = import.meta.env.VITE_BACKEND_BASE_API || 'http://127.0.0.1:8000/'
+export const baseURL = rawBaseURL.endsWith('/') ? rawBaseURL : `${rawBaseURL}/`
 
 const axiosInstance = axios.create({
   baseURL,

@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 import { AuthContext } from '../AuthProvider'
+import { baseURL } from '../axiosInstance'
 import DisclaimerBanner from './DisclaimerBanner'
 import Header from './Landing Page Component/Header'
 
@@ -23,7 +24,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BACKEND_BASE_API}token/`, {
+      const response = await axios.post(`${baseURL}token/`, {
         username,
         password,
       })

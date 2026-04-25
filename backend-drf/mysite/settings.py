@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+
+import dj_database_url
 from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,16 +28,25 @@ def parse_debug_value(raw_value):
     return False
 
 
+def parse_csv_value(raw_value):
+    return [item.strip() for item in str(raw_value).split(",") if item.strip()]
+
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='dev-only-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = parse_debug_value(config('DEBUG', default='False'))
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "testserver"]
+default_allowed_hosts = ["127.0.0.1", "localhost", "testserver"]
+render_external_hostname = config("RENDER_EXTERNAL_HOSTNAME", default="").strip()
+if render_external_hostname:
+    default_allowed_hosts.append(render_external_hostname)
+
+ALLOWED_HOSTS = parse_csv_value(config("ALLOWED_HOSTS", default=",".join(default_allowed_hosts))) or default_allowed_hosts
 
 
 # Application definition
@@ -62,21 +73,24 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-
-    "corsheaders.middleware.CorsMiddleware",
-    "django.middleware.common.CommonMiddleware",
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-]
+CORS_ALLOWED_ORIGINS = parse_csv_value(
+    config(
+        "CORS_ALLOWED_ORIGINS",
+        default="http://localhost:5173,http://127.0.0.1:5173",
+    )
+)
+
+CSRF_TRUSTED_ORIGINS = parse_csv_value(config("CSRF_TRUSTED_ORIGINS", default=""))
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -107,11 +121,13 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
+default_sqlite_url = f"sqlite:///{(BASE_DIR / 'db.sqlite3').as_posix()}"
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default=config("DATABASE_URL", default=default_sqlite_url),
+        conn_max_age=600,
+        conn_health_checks=True,
+    )
 }
 
 
@@ -150,5 +166,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 
 YOUTUBE_API_KEY = config('YOUTUBE_API_KEY', default='')
