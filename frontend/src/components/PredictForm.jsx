@@ -75,7 +75,7 @@ const PredictForm = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-linear-to-br from-slate-950 via-sky-950/20 to-slate-950 px-4 pb-16 pt-28 md:px-10">
+      <main className="min-h-screen bg-linear-to-br from-slate-950 via-sky-950/20 to-slate-950 px-4 pb-16 pt-28 md:px-10 xl:pl-[21rem]">
         <div className="mx-auto max-w-6xl space-y-6">
           <section className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
             <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">

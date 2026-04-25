@@ -16,6 +16,7 @@ const Dashboard = () => {
   const [error, setError] = useState('')
 
   useEffect(() => {
+    // Pull the dashboard payload once on mount and split it into UI-friendly slices.
     const fetchHistory = async () => {
       setLoading(true)
       setError('')
@@ -37,8 +38,11 @@ const Dashboard = () => {
 
   const latestEntry = history[0]
   const latestTheme = latestEntry ? getMoodTheme(latestEntry.prediction) : null
+
+  // Keep the summary card value stable unless the history data changes.
   const averageConfidence = useMemo(() => {
     if (!history.length) return 0
+    
     const sum = history.reduce((total, entry) => total + Number(entry.confidence || 0), 0)
     return Math.round((sum / history.length) * 100)
   }, [history])
@@ -46,10 +50,10 @@ const Dashboard = () => {
   return (
     <>
       <Header />
-      <main className="min-h-screen bg-linear-to-br from-slate-950 via-sky-950/25 to-slate-950 px-4 pb-16 pt-28 md:px-10">
+      <main className="min-h-screen bg-linear-to-br from-slate-950 via-sky-950/25 to-slate-950 px-4 pb-16 pt-28 md:px-10 xl:pl-[21rem]">
         <div className="mx-auto max-w-6xl space-y-6">
           <section className="grid gap-4 lg:grid-cols-[1.25fr_0.75fr]">
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">
+            <div className="rounded-4xl border border-white/10 bg-white/5 p-6 backdrop-blur-xl md:p-8">
               <div className="inline-flex items-center gap-2 rounded-full border border-sky-300/20 bg-sky-400/10 px-3 py-1 text-sm text-sky-100">
                 <Sparkles className="h-4 w-4" />
                 Dashboard
@@ -68,7 +72,7 @@ const Dashboard = () => {
           {error && <div className="rounded-2xl border border-red-300/35 bg-red-500/10 p-4 text-red-100">{error}</div>}
 
           {loading ? (
-            <div className="rounded-[2rem] border border-white/10 bg-white/5 p-10 text-center text-slate-200">
+            <div className="rounded-4xl border border-white/10 bg-white/5 p-10 text-center text-slate-200">
               Loading your mood history...
             </div>
           ) : (
@@ -98,11 +102,12 @@ const Dashboard = () => {
               </section>
 
               <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-                <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
+                <div className="rounded-4xl border border-white/10 bg-white/5 p-6">
                   <h2 className="text-xl font-semibold text-white">Mood trend</h2>
                   <p className="mt-2 text-sm text-slate-300">Higher scores indicate more severe emotional distress.</p>
                   <div className="mt-6 h-90">
                     <ResponsiveContainer width="100%" height="100%">
+                      {/* Compare mood severity and model confidence on the same timeline. */}
                       <LineChart data={trend}>
                         <XAxis dataKey="date" stroke="#cbd5e1" />
                         <YAxis domain={[1, 4]} ticks={[1, 2, 3, 4]} stroke="#cbd5e1" />
@@ -125,11 +130,12 @@ const Dashboard = () => {
                   </div>
                 </div>
 
-                <div className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
+                <div className="rounded-4xl border border-white/10 bg-white/5 p-6">
                   <h2 className="text-xl font-semibold text-white">Mood distribution</h2>
                   <p className="mt-2 text-sm text-slate-300">How frequently each category appears in your saved history.</p>
                   <div className="mt-6 h-90">
                     <ResponsiveContainer width="100%" height="100%">
+                      {/* Show the relative share of each saved mood label. */}
                       <PieChart>
                         <Pie data={distribution} dataKey="value" nameKey="name" innerRadius={75} outerRadius={115} paddingAngle={3}>
                           {distribution.map((entry, index) => (
@@ -147,7 +153,7 @@ const Dashboard = () => {
                 </div>
               </section>
 
-              <section className="rounded-[2rem] border border-white/10 bg-white/5 p-6">
+              <section className="rounded-4xl border border-white/10 bg-white/5 p-6">
                 <div className="flex items-center justify-between gap-4">
                   <div>
                     <h2 className="text-xl font-semibold text-white">Recent entries</h2>
@@ -157,6 +163,7 @@ const Dashboard = () => {
                 <div className="mt-6 grid gap-4">
                   {history.length ? (
                     history.slice(0, 6).map((entry) => {
+                      // Reuse the shared mood theme map so badges and borders stay consistent.
                       const theme = getMoodTheme(entry.prediction)
 
                       return (

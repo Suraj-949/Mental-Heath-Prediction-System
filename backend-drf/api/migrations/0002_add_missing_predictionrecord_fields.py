@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
             field=models.DateField(
                 db_index=True,
                 default=django.utils.timezone.localdate,
-            ),
+            ), 
             preserve_default=False,
         ),
         migrations.AddField(

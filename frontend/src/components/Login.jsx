@@ -30,7 +30,7 @@ const Login = () => {
       localStorage.setItem('accessToken', response.data.access)
       localStorage.setItem('refreshToken', response.data.refresh)
       setIsLoggedIn(true)
-      navigate('/predict')
+      navigate('/home')
     } catch (err) {
       setError(err?.response?.data?.detail || 'Invalid credentials. Please try again.')
     } finally {

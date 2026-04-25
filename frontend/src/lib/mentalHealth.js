@@ -80,3 +80,9 @@ export const dailyCheckInOptions = [
 export const disclaimerText = "This is not a medical diagnosis. Please consult a professional."
 
 export const getMoodTheme = (prediction) => moodThemeMap[prediction] || moodThemeMap.Depression
+
+export const getMoodForRecommendations = ({ currentMood, monthlyTopMood }) => {
+  if (currentMood?.prediction) return currentMood.prediction
+  if (monthlyTopMood && monthlyTopMood !== 'No entries yet') return monthlyTopMood
+  return 'Normal'
+}

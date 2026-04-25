@@ -50,6 +50,8 @@ INSTALLED_APPS = [
 
     'api',
     'accounts',
+    'prediction',
+    'yt_videos',
 
     'rest_framework',
 
@@ -148,3 +150,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+YOUTUBE_API_KEY = config('YOUTUBE_API_KEY', default='')

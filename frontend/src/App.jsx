@@ -4,6 +4,8 @@ import AuthProvider from './AuthProvider'
 import PublicRoute from './PublicRoute'
 import PrivateRoute from './PrivateRoute'
 import Dashboard from './components/Dashboard'
+import EditProfile from './components/EditProfile'
+import Home from './components/Home'
 import LandingPage from './components/LandingPage'
 import Login from './components/Login'
 import PredictForm from './components/PredictForm'
@@ -32,6 +34,14 @@ function App() {
             }
           />
           <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path="/predict"
             element={
               <PrivateRoute>
@@ -44,6 +54,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Dashboard />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <PrivateRoute>
+                <EditProfile />
               </PrivateRoute>
             }
           />

@@ -1,10 +1,13 @@
 from django.shortcuts import render
-from .serializers import UserSerializer
+from .serializers import UserProfileSerializer, UserSerializer
 from rest_framework import generics, permissions
 from django.contrib.auth.models import User
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
+
+
+
 
 class RegisterView(generics.CreateAPIView):
 
@@ -12,6 +15,9 @@ class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.AllowAny]
+
+
+
 
 
 class ProtectedView(APIView): 
@@ -22,3 +28,13 @@ class ProtectedView(APIView):
             'status' : 'Request was permitted'
         }
         return Response(response)
+
+
+
+
+class UserProfileView(generics.RetrieveUpdateAPIView):
+    serializer_class = UserProfileSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_object(self):
+        return self.request.user
